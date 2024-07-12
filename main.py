@@ -1,3 +1,4 @@
+
 import psycopg2
 from flask import Flask, redirect, render_template
 from flask_bootstrap import Bootstrap
@@ -33,9 +34,9 @@ def libros():
     conexion.close()
     return render_template('libros.html', datos=datos)
 
-@app.route ('/autores')
+@app.route('/autores')
 def autores():
-     # Conectar con la base de datos
+    # Conectar con la base de datos
     conexion = psycopg2.connect(
         database="biblioteca3A",
         user="postgres",
@@ -53,3 +54,23 @@ def autores():
     cursor.close()
     conexion.close()
     return render_template('autores.html', datos=datos)
+
+@app.route('/paises')
+def paises():
+    conexion = psycopg2.connect(
+        database="biblioteca3A",
+        user="postgres",
+        password="k888",
+        host="localhost",
+        port="5432"
+    )
+    # crear un cursor (objeto para recorrer las tablas)
+    cursor = conexion.cursor()
+    # ejecutar una consulta en postgres
+    cursor.execute('''SELECT * FROM pais''')
+    #recuperar la informacion
+    datos = cursor.fetchall()
+    #cerrar cursos y conexion a la base de datos
+    cursor.close()
+    conexion.close()
+    return render_template('paises.html', datos=datos)
